@@ -1,0 +1,4 @@
+interface:
+  display_name: "Bento SDK Integrations"
+  short_description: "Build correct framework-native Bento SDK integrations."
+  default_prompt: "Use the Bento skill to design and implement a framework-native integration for the relevant Bento SDK, preferring bulk APIs, secure credentials, and SDK-specific verification."
