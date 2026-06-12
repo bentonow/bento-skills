@@ -1,6 +1,6 @@
 {
   "name": "@bentonow/bento-skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Customer-facing AI agent skills for safe, framework-native Bento integrations.",
   "type": "module",
   "license": "MIT",
