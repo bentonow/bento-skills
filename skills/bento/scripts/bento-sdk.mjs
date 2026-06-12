@@ -3,6 +3,19 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const SDKS = {
+  mcp: {
+    label: 'Bento MCP',
+    reference: 'references/mcp.md',
+    credentials: ['BENTO_SITE_UUID', 'BENTO_PUBLISHABLE_KEY', 'BENTO_SECRET_KEY'],
+    install: [
+      'npx -y @bentonow/bento-mcp setup',
+      'npx -y @bentonow/bento-mcp --help'
+    ],
+    verify: [
+      'npx -y @bentonow/bento-mcp --help',
+      'npx -y @bentonow/bento-mcp setup --print'
+    ]
+  },
   cli: {
     label: 'Bento CLI',
     reference: 'references/cli.md',
@@ -170,6 +183,9 @@ function scoreProject(root) {
 
   if (packageJson?.name === '@bentonow/bento-cli' || packageJson?.bin?.bento) scores.cli += 10;
   if (allText.includes('@bentonow/bento-cli')) scores.cli += 4;
+
+  if (packageJson?.name === '@bentonow/bento-mcp' || jsonHasPackage(packageJson, '@bentonow/bento-mcp')) scores.mcp += 10;
+  if (allText.includes('@bentonow/bento-mcp') || allText.includes('bento-mcp')) scores.mcp += 4;
 
   if (jsonHasPackage(packageJson, '@bentonow/bento-node-sdk') || allText.includes('@bentonow/bento-node-sdk')) scores.node += 8;
   if (allText.includes('new Analytics(') && allText.includes('siteUuid')) scores.node += 3;

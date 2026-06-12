@@ -1,8 +1,41 @@
 {
-  "name": "bento-skills",
+  "name": "@bentonow/bento-skills",
   "version": "0.1.0",
-  "private": true,
+  "description": "Customer-facing AI agent skills for safe, framework-native Bento integrations.",
   "type": "module",
+  "license": "MIT",
+  "author": "Bento <support@bentonow.com>",
+  "homepage": "https://bentonow.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bentonow/bento-skills.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bentonow/bento-skills/issues"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "bento",
+    "cursor",
+    "email",
+    "marketing",
+    "skills"
+  ],
+  "files": [
+    "skills",
+    "scripts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@11.10.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "bento": "node skills/bento/scripts/bento-sdk.mjs"

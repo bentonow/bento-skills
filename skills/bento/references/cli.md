@@ -40,21 +40,22 @@ Subscribers:
 
 Events:
 
-- Use `bento events import events.json` for bulk backfills.
-- Use `bento events track --email ... --event ... --details ...` for a single manual action.
-- Use `bento events purchase` for purchases so value, unique key, currency, and cart details are preserved.
+- Use `bento events track --email ... --event ... --details ...` for single event tracking.
+- For bulk event backfills or purchase-specific modeling, use the selected SDK's batch event API until the CLI exposes a dedicated command.
+- Pass purchase details as structured JSON in `--details` only when a one-off CLI event is the right fit.
 
 Tags and fields:
 
 - Use `bento subscribers tag --file users.csv --add tag --confirm` for bulk tag changes.
-- Use `bento subscribers field update --fields '{...}'` when field changes should trigger automations.
-- Use `bento subscribers field set` for direct field updates that should not trigger automations.
+- Use `bento fields list` and `bento fields create <key>` to inspect or create custom field definitions.
+- Use SDK subscriber command APIs for bulk field value changes; the CLI currently exposes subscriber tag, subscribe, and unsubscribe flows, not subscriber field value updates.
 
 Broadcasts and content:
 
 - Use `bento broadcasts list --json` for automation.
-- Before creating broadcasts, require explicit audience tags/segments and batch size.
-- Prefer HTML files with `--html-file` for long sequence/template content.
+- Use `bento broadcasts create --name ... --subject ... --content ...` to create a draft broadcast, then review and send it from the Bento dashboard.
+- Before creating broadcasts, require explicit include/exclude tags and a sensible `--batch-size`.
+- Use `bento sequences create-email --html-file <path>` or `bento sequences update-email --html-file <path>` for long sequence email content.
 
 ## Use This, Not That
 
@@ -63,6 +64,7 @@ Broadcasts and content:
 - Use `--json` for scripts, not parsing human-readable tables.
 - Use named profiles for staging/production, not swapping credentials by hand.
 - Use `--confirm` only after previewing the exact target set.
+- Use the CLI repo's shipped `skill/` command reference as the source of truth for detailed command coverage; this file is the routing reference for the broader Bento skill package.
 
 ## Verification
 
