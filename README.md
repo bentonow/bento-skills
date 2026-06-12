@@ -14,13 +14,19 @@ Use it when you want an agent to:
 * Choose between the Bento CLI, Bento MCP, an SDK, or the n8n node.
 * Keep API credentials out of source code and avoid unsafe bulk operations.
 
-This is the official Bento-maintained skill package. Install it from [github.com/bentonow/bento-skills](https://github.com/bentonow/bento-skills), and use [GitHub Issues](https://github.com/bentonow/bento-skills/issues) or support@bentonow.com for support. Bento's privacy policy is at [bentonow.com/legal/privacy](https://bentonow.com/legal/privacy).
+This is the official Bento-maintained skill package. Install it from [`@bentonow/bento-skills`](https://www.npmjs.com/package/@bentonow/bento-skills) or [github.com/bentonow/bento-skills](https://github.com/bentonow/bento-skills), and use [GitHub Issues](https://github.com/bentonow/bento-skills/issues) or support@bentonow.com for support. Bento's privacy policy is at [bentonow.com/legal/privacy](https://bentonow.com/legal/privacy).
 
 Get the product docs at [docs.bentonow.com](https://docs.bentonow.com). For the maintained agent onboarding guide, use [bentonow.com/agent_onboarding.md](https://bentonow.com/agent_onboarding.md).
 
 ## Install
 
-Install the skill package with the `skills` CLI:
+Install the skill package from npm with the `skills` CLI:
+
+```bash
+npx skills add @bentonow/bento-skills
+```
+
+You can also install from GitHub:
 
 ```bash
 npx skills add https://github.com/bentonow/bento-skills
@@ -31,13 +37,13 @@ Installing this package adds agent guidance files to your supported AI tool. It 
 Install only the `bento` skill globally and skip prompts:
 
 ```bash
-npx skills add https://github.com/bentonow/bento-skills --skill bento -g -y
+npx skills add @bentonow/bento-skills --skill bento -g -y
 ```
 
 Install for specific agents when needed:
 
 ```bash
-npx skills add https://github.com/bentonow/bento-skills -a claude-code -a codex -a opencode -a amp
+npx skills add @bentonow/bento-skills -a claude-code -a codex -a opencode -a amp
 ```
 
 ## First Safe Prompts
