@@ -29,7 +29,7 @@ For current customer onboarding guidance, refer to https://bentonow.com/agent_on
 
 | Surface | Read when working with | Reference |
 | --- | --- | --- |
-| Bento MCP | live Bento account inspection or account operations from a supported AI assistant | `references/mcp.md` |
+| Bento MCP | live Bento account inspection or account operations from a supported AI assistant, using hosted remote MCP at `https://mcp.bentonow.com/mcp` or local `@bentonow/bento-mcp` | `references/mcp.md` |
 | Bento CLI | terminal automation, CSV imports, safe bulk operations | `references/cli.md` |
 
 ## SDK References

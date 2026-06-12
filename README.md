@@ -98,7 +98,7 @@ The parent skill routes agents to one focused reference at a time so normal task
 
 | Tool | Use When | Reference |
 | --- | --- | --- |
-| Bento MCP | A supported AI assistant needs to inspect or operate on a live Bento account from chat. | `skills/bento/references/mcp.md` |
+| Bento MCP | A supported AI assistant needs to inspect or operate on a live Bento account from chat, using hosted remote MCP at `https://mcp.bentonow.com/mcp` or local `@bentonow/bento-mcp`. | `skills/bento/references/mcp.md` |
 | Bento CLI | You need terminal automation, CSV imports, profiles, JSON output, or CI jobs. | `skills/bento/references/cli.md` |
 | Node SDK | You are building server-side JavaScript, TypeScript, or Bun code. | `skills/bento/references/node.md` |
 | Laravel SDK | You are building a Laravel app with Facades, DTOs, queues, config, and mail transport. | `skills/bento/references/laravel.md` |

@@ -4,7 +4,15 @@ Use Bento MCP when a supported AI assistant should inspect or operate on a live 
 
 ## Install And Configure
 
-Run the setup wizard:
+For supported remote MCP clients, use Bento's hosted MCP server:
+
+```text
+https://mcp.bentonow.com/mcp
+```
+
+Use the hosted server when the assistant or MCP client supports remote MCP over HTTP.
+
+For clients that expect a local stdio server, run the setup wizard:
 
 ```bash
 npx -y @bentonow/bento-mcp setup
@@ -22,7 +30,7 @@ Required credentials:
 - `BENTO_PUBLISHABLE_KEY`
 - `BENTO_SECRET_KEY`
 
-Store credentials in the MCP client's configuration or Bento MCP's setup-managed env file. Do not hardcode secret keys into project files.
+Store credentials in the MCP client's configuration, remote MCP connection settings, or Bento MCP's setup-managed env file. Do not hardcode secret keys into project files.
 
 ## Preferred Account Workflows
 
@@ -52,6 +60,7 @@ Broadcasts, sequences, workflows, and templates:
 ## Use This, Not That
 
 - Use MCP for live account inspection from chat, not ad hoc scripts with pasted credentials.
+- Use the hosted MCP server when the client supports remote MCP; use `@bentonow/bento-mcp` when it needs a local stdio server.
 - Use read-only MCP tools before write tools when the account state is unclear.
 - Use SDKs for app integration code, not MCP calls embedded in production application paths.
 - Use the CLI for CSV imports and CI automation, not manual chat copy-paste of large datasets.
