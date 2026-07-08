@@ -54,8 +54,34 @@ Broadcasts, sequences, workflows, and templates:
 
 - Use list operations before creating or updating content.
 - Create broadcasts as drafts and tell the user to review them in Bento before sending.
-- Use sequence email and template update tools only with explicit user-provided subject and HTML.
+- Sequence email create tools append a new email. Sequence email update tools patch an existing template by numeric `templateId`.
 - For large HTML changes, ask the user to keep content in a file or provide a clear diff.
+- For sequence email creation, use the `id` returned by the sequence list tool. Do not invent a sequence ID or reuse an ID from another site.
+
+## API Guardrails
+
+- `POST /fetch/commands` is async and returns `{ results }`, not an updated subscriber payload.
+- Prefer `POST /batch/subscribers` for imports (up to 1000, no automations). Reserve `POST /fetch/subscribers` for single creates.
+- Cache `/stats/*` responses. The API allows about 30 requests per hour per IP.
+- Do not use geolocation enrichment. `GET /experimental/geolocation` returns `{}`.
+- Blacklist checks use `GET /experimental/blacklist?domain=...` or `&ip=...`.
+- Tag deletes use `DELETE /fetch/tags/:id` with `{ "tag": { "name": "..." } }`. List tags first.
+- List tags, fields, sequences, and broadcasts before write operations.
+- Broadcast list defaults to sent status. New API broadcasts are drafts until reviewed in Bento.
+
+## Hosted vs local tool names
+
+Hosted MCP (`https://mcp.bentonow.com/mcp`) prefixes tools with `bento_`. Local stdio MCP (`@bentonow/bento-mcp`) uses unprefixed snake_case names for the same operations.
+
+| Operation | Hosted MCP | Local MCP |
+| --- | --- | --- |
+| List sequences | `bento_list_sequences` | `list_sequences` |
+| Create sequence email | `bento_create_sequence_email` | `create_sequence_email` |
+| Update sequence email | `bento_update_sequence_email` | `update_sequence_email` |
+| List tags | `bento_list_tags` | `list_tags` |
+| Get subscriber | `bento_get_subscriber` | `get_subscriber` |
+
+Use the sequence list result `id` for create URLs and `templateId` for updates.
 
 ## Use This, Not That
 

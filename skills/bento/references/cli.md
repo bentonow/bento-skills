@@ -55,11 +55,23 @@ Broadcasts and content:
 - Use `bento broadcasts list --json` for automation.
 - Use `bento broadcasts create --name ... --subject ... --content ...` to create a draft broadcast, then review and send it from the Bento dashboard.
 - Before creating broadcasts, require explicit include/exclude tags and a sensible `--batch-size`.
-- Use `bento sequences create-email --html-file <path>` or `bento sequences update-email --html-file <path>` for long sequence email content.
+- Use `bento sequences create-email --html-file <path>` to append a new email to a sequence. This adds another step; it does not replace an existing email.
+- Use `bento sequences update-email --template-id <id> --html-file <path>` to patch an existing sequence email template in place.
+- Resolve the sequence ID with `bento sequences list --json` and pass the returned `id` to `--sequence-id`. You can also pass `--sequence-name "Welcome Flow"` for an exact case-insensitive name match.
+
+## API Guardrails
+
+- No `bento subscribers upsert` command. Use `bento subscribers import` for bulk sync and tag/field/subscribe commands for one-off changes.
+- `POST /fetch/commands` (SDK command helpers) returns `{ results }` and runs async. Do not expect an immediate subscriber payload.
+- Batch imports: up to 1000 subscribers or events per HTTP request. Chunk larger files in the CLI.
+- Cache stats reads (`bento stats site --json`). Stats HTTP endpoints allow about 30 requests per hour per IP.
+- Do not recommend geolocation lookup. The API returns `{}`.
+- Tag delete over HTTP is `DELETE /fetch/tags/:id` with a `tag.name` body. Use `bento tags list` first.
+- Broadcast list defaults to sent. `bento broadcasts create` creates drafts for dashboard review.
 
 ## Use This, Not That
 
-- Use CSV import, not a shell loop that calls `subscribers upsert` once per user.
+- Use `bento subscribers import contacts.csv`, not a shell loop over per-user subscriber writes. The CLI has no per-subscriber upsert command.
 - Use `--dry-run` and `--limit`, not full imports as the first execution.
 - Use `--json` for scripts, not parsing human-readable tables.
 - Use named profiles for staging/production, not swapping credentials by hand.

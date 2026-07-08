@@ -96,11 +96,40 @@ const cliReference = readRequired(path.join(referencesDir, 'cli.md'));
 const unsupportedCliExamples = [
   /bento\s+events\s+import\b/,
   /bento\s+events\s+purchase\b/,
+  /bento\s+subscribers\s+upsert\b/,
   /bento\s+subscribers\s+field\s+update\b/,
   /bento\s+subscribers\s+field\s+set\b/
 ];
+const cliWithoutNegatedExamples = cliReference
+  .split('\n')
+  .filter((line) => !/\bno\b.*subscribers upsert|subscribers upsert.*\bnot\b|has no per-subscriber upsert/i.test(line))
+  .join('\n');
 for (const pattern of unsupportedCliExamples) {
-  assert.doesNotMatch(cliReference, pattern, `cli.md documents unsupported CLI example: ${pattern}`);
+  assert.doesNotMatch(cliWithoutNegatedExamples, pattern, `cli.md documents unsupported CLI example: ${pattern}`);
+}
+
+const staleApiStrings = [
+  { pattern: /blacklist\.json/i, label: 'blacklist.json path' },
+  { pattern: /\bsubscribers upsert\b/i, label: 'subscribers upsert command' },
+  { pattern: /sequence_abc123/i, label: 'sequence_abc123 placeholder id' },
+  { pattern: /DELETE\s+\/fetch\/tags(?!\/:id)(?:[`'"\s]|$)/i, label: 'DELETE /fetch/tags without :id' }
+];
+
+for (const file of markdownFiles) {
+  const text = fs.readFileSync(file, 'utf8');
+  for (const { pattern, label } of staleApiStrings) {
+    const lines = text.split('\n').filter((line) => pattern.test(line));
+    const badLines = lines.filter((line) => !/\bnot\b|do not use|no `/i.test(line));
+    assert.equal(badLines.length, 0, `${path.relative(root, file)} contains stale API string: ${label}`);
+  }
+  if (/blacklist/i.test(text) && /\bip_address\b/i.test(text)) {
+    const badLines = text.split('\n').filter(
+      (line) => /blacklist/i.test(line)
+        && /\bip_address\b/i.test(line)
+        && !/\bnot\b.*ip_address|ip_address.*\bnot\b|do not use/i.test(line)
+    );
+    assert.equal(badLines.length, 0, `${path.relative(root, file)} uses ip_address in blacklist context; use ip`);
+  }
 }
 
 const list = run(['list']);

@@ -60,6 +60,22 @@ For current customer onboarding guidance, refer to https://bentonow.com/agent_on
 - For destructive or large email/subscriber operations, add a dry-run or preview path whenever the selected SDK/CLI or application workflow allows it.
 - For live customer accounts, start with read-only inspection or a plan. Ask for explicit confirmation before destructive, high-volume, or email-sending actions.
 
+## API Guardrails
+
+These match the current Rails `/api/v1` behavior. Prefer list/read tools before create, update, or delete operations.
+
+- **Commands are async.** `POST /fetch/commands` returns `{ results }` with a queued command count. It does not return the updated subscriber synchronously.
+- **Subscriber import vs create.** Use `POST /batch/subscribers` (up to 1000 records, no automations) for audience sync/import. Use `POST /fetch/subscribers` only for single creates that may trigger automations.
+- **Batch sizes.** Events: up to 1000 per request. Subscribers: up to 1000. Transactional emails: up to 60.
+- **Stats caching.** `/stats/*` is limited to about 30 requests per hour per IP. Cache stats in the app; do not poll on every page view.
+- **Fetch/batch pace.** `/fetch/*` and `/batch/*` are limited to about 60 requests per minute per IP.
+- **Tag delete route.** Delete tags with `DELETE /fetch/tags/:id` and a JSON body `{ "tag": { "name": "..." } }`. List tags first to get the id.
+- **Sequence IDs.** Use the `id` returned by `GET /fetch/sequences` (or `list_sequences` in MCP). Do not invent IDs like `sequence_abc123`.
+- **Blacklist check.** Call `GET /experimental/blacklist` with query params `domain` and/or `ip`. Do not use `blacklist.json` or `ip_address` as the param name.
+- **Geolocation disabled.** `GET /experimental/geolocation` returns `{}`. Do not recommend it for enrichment.
+- **Broadcast defaults.** `GET /fetch/broadcasts` defaults to `status=sent` when omitted. API-created broadcasts start as drafts; review before sending.
+- **List before write.** List tags, fields, sequences, broadcasts, and subscribers before creating duplicates or targeting the wrong record.
+
 ## Common Request Routing
 
 - "Sync all users/customers/subscribers": use the selected SDK's bulk subscriber import/upsert path, chunked and retryable.

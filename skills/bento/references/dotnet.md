@@ -63,7 +63,7 @@ Transactional email, broadcasts, stats, validation:
 - Inject `IBentoEmailService` and send `EmailRequest`.
 - Inject `IBentoBroadcastService` and use `CreateBroadcastAsync`.
 - Inject `IBentoStatsService` for `GetSiteStatsAsync`, segment, and report stats.
-- Inject validation, blacklist, gender, and geolocation services for enrichment.
+- Inject validation and blacklist services for enrichment. Geolocation is disabled (`{}` response).
 
 ## Use This, Not That
 
