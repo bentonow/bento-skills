@@ -64,6 +64,24 @@ Broadcasts, stats, validation:
 - Use `bento.V1.Stats.getSiteStats()`, `getSegmentStats(id)`, and `getReportStats(id)`.
 - Use `bento.V1.Experimental.validateEmail(...)` and `getBlacklistStatus(...)` when gating risky input.
 
+Sequences and templates:
+
+- Use `bento.V1.Sequences.getSequences({ page })` to list sequences and inspect the returned `id` plus embedded `email_templates`.
+- Use `bento.V1.Sequences.createSequenceEmail(sequenceId, { subject, html, ... })` to append a new email to a sequence. Pass the `id` returned by `getSequences`.
+- Use `bento.V1.EmailTemplates.updateEmailTemplate({ id, subject, html })` to patch an existing template by numeric template ID. This updates the current email in place; it does not add another step.
+- Create requests POST to `/fetch/sequences/:id/emails/templates` with an `email_template` wrapper. Update requests PATCH `/fetch/emails/templates/:id`.
+- Name-based create flows must resolve to a sequence record and use its returned `id`.
+
+## API Guardrails
+
+- `Commands.*` and `POST /fetch/commands` return `{ results }` (queued count), not a synchronous subscriber record.
+- Import subscribers with `Batch.importSubscribers` (1-1000, no automations). Single `POST /fetch/subscribers` creates may trigger automations.
+- Cache `Stats.getSiteStats` and related calls. `/stats/*` allows about 30 requests per hour per IP.
+- Blacklist: `Experimental.getBlacklistStatus` uses query params `domain` and/or `ip`, not `ip_address` or `blacklist.json`.
+- Geolocation is disabled; `GET /experimental/geolocation` returns `{}`.
+- HTTP tag delete: `DELETE /fetch/tags/:id` with `{ tag: { name } }`. List tags first.
+- Chunk batch events to 1000 items max per request.
+
 ## Use This, Not That
 
 - Use `Batch.importSubscribers`, not `for await (user of users) addSubscriber(user)`.

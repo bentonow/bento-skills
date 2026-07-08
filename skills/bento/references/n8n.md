@@ -52,7 +52,7 @@ Transactional email, broadcasts, automation content:
 Stats and validation:
 
 - Use Site Metrics, Segment Metrics, and Report Metrics for reporting workflows.
-- Use Validate Email, Blacklist Check, Content Moderation, Gender Guess, and Geolocation Lookup where appropriate.
+- Use Validate Email and Blacklist Check and Content Moderation where appropriate. Do not use Geolocation Lookup; the API returns `{}`.
 
 ## Use This, Not That
 
